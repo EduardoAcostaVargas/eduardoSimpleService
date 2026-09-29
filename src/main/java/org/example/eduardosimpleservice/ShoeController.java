@@ -8,6 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/shoes")
+@CrossOrigin(origins = "http://localhost:5173")
 public class ShoeController {
 
     List<Shoe> shoes = new ArrayList<>();
@@ -55,7 +56,7 @@ public class ShoeController {
 
         shoes.add(shoe);
 
-        return ResponseEntity.status(200).body(shoe);
+        return ResponseEntity.status(201).body(shoe);
     }
 
     @DeleteMapping("/{id}")
