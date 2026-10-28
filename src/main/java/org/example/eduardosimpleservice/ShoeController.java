@@ -64,8 +64,8 @@ public class ShoeController {
         for (Shoe shoe : shoes) {
             if (shoe.getId() == id) {
                 shoes.remove(shoe);
+                return ResponseEntity.noContent().build();
             }
-            return ResponseEntity.noContent().build();
         }
 
         return ResponseEntity.notFound().build();
