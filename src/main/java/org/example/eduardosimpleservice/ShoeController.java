@@ -62,7 +62,9 @@ public class ShoeController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteShoe(@PathVariable int id) {
         for (Shoe shoe : shoes) {
-            shoes.remove(shoe);
+            if (shoe.getId() == id) {
+                shoes.remove(shoe);
+            }
             return ResponseEntity.noContent().build();
         }
 
