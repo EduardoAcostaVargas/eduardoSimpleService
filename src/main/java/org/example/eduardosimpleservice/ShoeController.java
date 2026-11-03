@@ -42,9 +42,12 @@ public class ShoeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteShoe(@PathVariable Long id) {
-        if (!shoeRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<Void> deleteShoe(@PathVariable int id) {
+        for (Shoe shoe : shoes) {
+            if (shoe.getId() == id) {
+                shoes.remove(shoe);
+                return ResponseEntity.noContent().build();
+            }
         }
 
         shoeRepository.deleteById(id);
