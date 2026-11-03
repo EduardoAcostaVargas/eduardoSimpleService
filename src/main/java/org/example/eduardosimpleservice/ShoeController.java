@@ -41,18 +41,9 @@ public class ShoeController {
                 .body(savedShoe);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteShoe(@PathVariable int id) {
-        for (Shoe shoe : shoes) {
-            if (shoe.getId() == id) {
-                shoes.remove(shoe);
-                return ResponseEntity.noContent().build();
-            }
-        }
-
+    @DeleteMapping("{id}")
+    public void deleteShoe(@PathVariable Long id) {
         shoeRepository.deleteById(id);
-
-        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
