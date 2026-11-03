@@ -1,18 +1,47 @@
 package org.example.eduardosimpleservice;
 
+import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+import java.math.BigDecimal;
+
+@Entity
+@Table(name = "shoes")
 public class Shoe {
-    private int id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, length = 200)
     private String model;
+
+    @Column(nullable = false, length = 100)
     private String brand;
-    private double shoeSize;
-    private double price;
+
+    @Column(nullable = false)
+    private BigDecimal shoeSize;
+
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal price;
+
+    @Column(name = "image_url", length = 1000)
+    private String imageURL;
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
 
     public Shoe(){
 
     }
 
-    public Shoe(int id, String brand, String model,double shoeSize, double price){
-        this.id = id;
+    public Shoe(String brand, String model,BigDecimal shoeSize, BigDecimal price){
         this.brand = brand;
         this.model = model;
         this.shoeSize = shoeSize;
@@ -27,11 +56,11 @@ public class Shoe {
         this.brand = brand;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -43,19 +72,19 @@ public class Shoe {
         this.model = model;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-    public double getShoeSize() {
+    public BigDecimal getShoeSize() {
         return shoeSize;
     }
 
-    public void setShoeSize(double shoeSize) {
+    public void setShoeSize(BigDecimal shoeSize) {
         this.shoeSize = shoeSize;
     }
 }
