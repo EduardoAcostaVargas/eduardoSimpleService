@@ -1,9 +1,9 @@
 package org.example.eduardosimpleservice;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -11,52 +11,34 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:5173")
 public class ShoeController {
 
-    List<Shoe> shoes = new ArrayList<>();
+    private final ShoeRepository shoeRepository;
 
-
-    public ShoeController() {
-        shoes.add(new Shoe(
-                1,
-                "Nike",
-                "Romaleos",
-                12,
-                400.50
-        ));
-
-        shoes.add(new Shoe(
-                2,
-                "Nike",
-                "Air Force",
-                11.5,
-                100
-        ));
-
+    public ShoeController(ShoeRepository shoeRepository) {
+        this.shoeRepository = shoeRepository;
     }
 
     @RequestMapping
-    public List<Shoe> getShoes(){
-        return shoes;
+    public ResponseEntity<List<Shoe>> getAllShoes(){
+        return ResponseEntity.ok(shoeRepository.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Shoe> getShoe(@PathVariable int id){
-        for(Shoe shoe : shoes) {
-            if (shoe.getId() == id) {
-                return ResponseEntity.ok(shoe);
-            }
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<Shoe> getShoeById(@PathVariable Long id){
+
+        return shoeRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public ResponseEntity<Shoe> addShoe(@RequestBody Shoe shoe){
+        shoe.setId(null);
 
-        int newId = shoes.size() + 1;
-        shoe.setId(newId);
+        Shoe savedShoe = shoeRepository.save(shoe);
 
-        shoes.add(shoe);
-
-        return ResponseEntity.status(201).body(shoe);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(savedShoe);
     }
 
     @DeleteMapping("/{id}")
@@ -68,23 +50,25 @@ public class ShoeController {
             }
         }
 
-        return ResponseEntity.notFound().build();
+        shoeRepository.deleteById(id);
+
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Shoe> updateShoe(@PathVariable int id, @RequestBody Shoe updatedShoe) {
-        for (Shoe shoe : shoes) {
-            if (shoe.getId() == id) {
-                shoe.setBrand(updatedShoe.getBrand());
-                shoe.setModel(updatedShoe.getModel());
-                shoe.setShoeSize(updatedShoe.getShoeSize());
-                shoe.setPrice(updatedShoe.getPrice());
+    public ResponseEntity<Shoe> updateShoe(@PathVariable Long id, @RequestBody Shoe updatedShoe) {
+        return shoeRepository.findById(id)
+                .map(existingShoe -> {
+                    existingShoe.setBrand(updatedShoe.getBrand());
+                    existingShoe.setModel(updatedShoe.getModel());
+                    existingShoe.setPrice(updatedShoe.getPrice());
+                    existingShoe.setShoeSize(updatedShoe.getShoeSize());
 
-                return ResponseEntity.ok(shoe);
-            }
-        }
+                    Shoe savedShoe = shoeRepository.save(existingShoe);
 
-        return ResponseEntity.notFound().build();
+                    return ResponseEntity.ok(savedShoe);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 }
