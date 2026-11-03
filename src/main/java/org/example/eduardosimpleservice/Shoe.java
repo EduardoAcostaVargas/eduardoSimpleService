@@ -20,7 +20,7 @@ public class Shoe {
     @Column(nullable = false, length = 100)
     private String brand;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal shoeSize;
 
     @Column(nullable = false, precision = 10, scale = 2)
