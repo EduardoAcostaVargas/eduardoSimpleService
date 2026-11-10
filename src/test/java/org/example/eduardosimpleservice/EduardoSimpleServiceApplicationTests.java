@@ -32,10 +32,10 @@ class EduardoSimpleServiceApplicationTests {
     void addShoe() throws Exception {
         String newShoe = """
                 {
-                    "Brand": "Test Shoe",
-                    "Model": "Test Model",
-                    "Size": 11,
-                    "Price": 125.99
+                    "brand": "Test Shoe",
+                    "model": "Test Model",
+                    "price": 125.99,
+                    "shoeSize": 11
                 }
                 """;
 
