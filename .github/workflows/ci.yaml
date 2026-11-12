@@ -60,7 +60,7 @@
             password: ${{secrets.GITHUB_TOKEN}}
 
         - name: Build Docker image
-          run: docker build -t shoe-backend:latest .
+          run: docker build -t ghcr.io/eduardoacostavargas/shoe-backend:latest .
 
         - name: Push Docker Image
           if: github.event_name == 'push'
