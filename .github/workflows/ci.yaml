@@ -46,3 +46,6 @@
 
         - name: Build application
           run: ./gradlew build -x test
+
+        - name: Build Docker image
+          run: docker build -t shoe-backend:latest .
